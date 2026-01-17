@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import Bill from './bill'
-import Product from './product'
+import Bill from './bill.jsx'
+import Product from './Product.jsx'
 
 function App() {
   const [addCount, setAddCount] = useState(0)
