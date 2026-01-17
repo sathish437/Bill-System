@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import Bill from './bill.jsx'
+import Bill from './Bill.jsx'
 import Product from './Product.jsx'
 
 function App() {
