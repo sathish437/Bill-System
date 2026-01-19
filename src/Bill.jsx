@@ -1,6 +1,6 @@
 import {  useEffect, useState } from "react"
 
-const Bill = ({count, keys, addCount }) => {
+const Bill = ({Qtycount, keys, addCount }) => {
     let [billDatas,setBillDatas]=useState([])
     let [subTotal,setSubTotal]=useState()
     let [gst,setGst]=useState()
@@ -21,9 +21,9 @@ useEffect(() => {
         let updated = [...prev]
         updated[index] = {
           ...updated[index],
-          qty: updated[index].qty + count,
+          qty: Number(updated[index].qty) +Number(Qtycount),
           amount:
-            (updated[index].qty + count) *
+            (updated[index].qty + Qtycount) *
             dataPro.Price
         }
         return updated
@@ -34,8 +34,8 @@ useEffect(() => {
         {
           id: dataPro.id,
           name: dataPro.Name,
-          qty: count,
-          amount: dataPro.Price * count
+          qty: Qtycount,
+          amount: dataPro.Price * Qtycount
         }
       ]
     })

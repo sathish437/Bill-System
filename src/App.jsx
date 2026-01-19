@@ -5,7 +5,7 @@ import Product from './Product.jsx'
 function App() {
   const [addCount, setAddCount] = useState(0)
   const [keys, setKeys] = useState(null)
-  const [count, setCount] = useState(1)
+  const [Qtycount, setQtycount] = useState(1)
 
 return (
   <>
@@ -42,13 +42,13 @@ return (
         <Product
           setAddCount={setAddCount}
           setKeys={setKeys}
-          setCount={setCount}
+          setQtycount={setQtycount}
         />
 
         <Bill
+          Qtycount={Qtycount}
           addCount={addCount}
           keys={keys}
-          count={count}
           />
       </div>
     </main>

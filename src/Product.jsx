@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 
-const Product = ({setCount,setAddCount,setKeys}) => {
+const Product = ({setAddCount,setKeys,setQtycount}) => {
     const [proData,setProData]=useState({
         proName:'',
         price:'',
@@ -9,6 +9,7 @@ const Product = ({setCount,setAddCount,setKeys}) => {
 
     let [datas,setData]=useState([])
     let [show,setShow]=useState(false)
+    let [qtyCnt,setQtyCnt]=useState()
     const handleChange = (e) =>{
         let {name,value}=e.target
         setProData(prev=>({
@@ -53,9 +54,16 @@ const Product = ({setCount,setAddCount,setKeys}) => {
     }
 
     const addbtn = (id) => {
+        let getAvlQty=JSON.parse(localStorage.getItem(`inputs${id}`)).Qty
         setKeys(id)
-        setCount(1)       
         setAddCount(prev => prev + 1)
+        if(qtyCnt>getAvlQty){
+            alert("Available quantity is less")
+            return
+        }else{
+            setQtycount(qtyCnt)
+        }
+     
     }
 
 
@@ -156,7 +164,7 @@ const Product = ({setCount,setAddCount,setKeys}) => {
                     {data.Price}
                     </td>
                     <td className="p-[0.5px] sm:p-1 text-[12px] sm:text-[15px] text-center border">
-                    1
+                    <input type="number" min="1" defaultValue={1} onChange={(e)=>setQtyCnt(Number(e.target.value))}/>
                     </td>
                     <td className="p-[0.5px] sm:p-1 text-[12px] sm:text-[15px] text-center border">
                     <button
