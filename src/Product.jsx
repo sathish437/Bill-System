@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-const Product = ({ setAddCount, setKeys, setQtycount }) => {
+const Product = ({ setAddCount, setKeys, setQtycount,cnfQty }) => {
   const [proData, setProData] = useState({
     proName: "",
     price: "",
@@ -34,6 +34,7 @@ const Product = ({ setAddCount, setKeys, setQtycount }) => {
         price: "",
         qty: "",
       });
+      alert("Product added successfully");
     } else {
       alert("enter your product details");
     }
@@ -64,17 +65,17 @@ const Product = ({ setAddCount, setKeys, setQtycount }) => {
     setKeys(id);
     setAddCount(prev => prev + 1);
 
-    if (selectedQty > getAvlQty?.Qty) {
-      alert(`Available quantity is less ${getAvlQty?.Qty} `);
-      return;
+    if (selectedQty > getAvlQty?.Qty && selectedQty > cnfQty) {
+      alert(`Available quantity is less ${getAvlQty?.Qty} `)
+      return
     } else {
-      setQtycount(selectedQty); 
+      setQtycount(selectedQty)
     }
   };
 
 
   const delbtn = (id) => {
-    localStorage.removeItem(`inputs${id}`);
+    localStorage.removeItem(`inputs${id}`)
   };
 
   return (

@@ -1,51 +1,88 @@
-import {  useEffect, useState } from "react"
+import {  useEffect, useState,useRef } from "react"
 
-const Bill = ({Qtycount, keys, addCount }) => {
+const Bill = ({Qtycount, keys, addCount,setCnfQty }) => {
     let [billDatas,setBillDatas]=useState([])
     let [subTotal,setSubTotal]=useState()
     let [gst,setGst]=useState()
-useEffect(() => {
-    if (!keys) return
-
-    let dataPro = JSON.parse(
-      localStorage.getItem(`inputs${keys}`)
-    )
-    if (!dataPro) return
+    let [getQty,setGetQty]=useState()
+    const alertRef = useRef(false);
+    useEffect(()=>{
+      if (!keys) return;
+      const dataPro = JSON.parse(localStorage.getItem(`inputs${keys}`));
+      if (!dataPro) return;
+      setGetQty(dataPro.Qty); 
+     },[keys])
+ useEffect(() => {
+    if (!keys) return;
+    const dataPro = JSON.parse(localStorage.getItem(`inputs${keys}`));
+    if (!dataPro) return;
 
     setBillDatas(prev => {
-      let index = prev.findIndex(
-        item => item.id===dataPro.id
-      )
+      let index = prev.findIndex(item => item.id === dataPro.id);
 
+      let finalQty = Qtycount;
       if (index !== -1) {
-        let updated = [...prev]
-        updated[index] = {
-          ...updated[index],
-          qty: Number(updated[index].qty) +Number(Qtycount),
-          amount:
-            (updated[index].qty + Qtycount) *
-            dataPro.Price
-        }
-        return updated
+        finalQty = prev[index].qty + Qtycount;
       }
 
+      // Check limit
+      if (finalQty > dataPro.Qty) {
+        finalQty = dataPro.Qty;
+        if (!alertRef.current) {
+          alert(`Available quantity is less ${dataPro.Qty}`);
+          alertRef.current = true;
+        }
+      }
+
+      if (index !== -1) {
+        // Update existing
+        const updated = [...prev];
+        updated[index] = {
+          ...updated[index],
+          qty: finalQty,
+          amount: finalQty * dataPro.Price
+        };
+        return updated;
+      }
+
+      // Add new
       return [
         ...prev,
         {
           id: dataPro.id,
           name: dataPro.Name,
-          qty: Qtycount,
-          amount: dataPro.Price * Qtycount
+          qty: finalQty,
+          amount: finalQty * dataPro.Price
         }
-      ]
-    })
-  }, [addCount])
+      ];
+    });
+  }, [addCount, Qtycount, keys]);
+
+
   useEffect(()=>{
     setSubTotal(billDatas.reduce((total,item)=>total+item.amount,0))
   },[billDatas])
+  
   useEffect(()=>{
     setGst((subTotal*(17/100)).toFixed(2))
   },[subTotal])
+  
+
+
+  // useEffect(() => {
+  //   if (flag) {
+  //     alert(`Available quantity is less ${getQty}`);
+  //   }
+  // }, [flag]);
+   useEffect(() => {
+    billDatas.forEach(item => {
+      if (item.qty > getQty && !alertRef.current) {
+        alert(`Available quantity is less ${getQty}`);
+        alertRef.current = true; // mark alert as shown
+      }
+    });
+  }, [billDatas, getQty]);
+
 
   return (
     <>
@@ -62,7 +99,7 @@ useEffect(() => {
 
         <section className="flex flex-col gap-2">
           <h1 className="text-[18px] font-semibold text-slate-700">
-            🧾 Bill
+            Bill
           </h1>
 
           <table className="w-full border-collapse bg-white/80 rounded-xl overflow-hidden">
