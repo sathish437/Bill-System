@@ -1,6 +1,6 @@
 import {  useEffect, useState,useRef } from "react"
 
-const Bill = ({Qtycount, keys, addCount,setCnfQty }) => {
+const Bill = ({Qtycount, keys, addCount}) => {
     let [billDatas,setBillDatas]=useState([])
     let [subTotal,setSubTotal]=useState()
     let [gst,setGst]=useState()
@@ -12,7 +12,7 @@ const Bill = ({Qtycount, keys, addCount,setCnfQty }) => {
       if (!dataPro) return;
       setGetQty(dataPro.Qty); 
      },[keys])
- useEffect(() => {
+    useEffect(() => {
     if (!keys) return;
     const dataPro = JSON.parse(localStorage.getItem(`inputs${keys}`));
     if (!dataPro) return;
@@ -25,7 +25,6 @@ const Bill = ({Qtycount, keys, addCount,setCnfQty }) => {
         finalQty = prev[index].qty + Qtycount;
       }
 
-      // Check limit
       if (finalQty > dataPro.Qty) {
         finalQty = dataPro.Qty;
         if (!alertRef.current) {
@@ -35,7 +34,6 @@ const Bill = ({Qtycount, keys, addCount,setCnfQty }) => {
       }
 
       if (index !== -1) {
-        // Update existing
         const updated = [...prev];
         updated[index] = {
           ...updated[index],
@@ -45,7 +43,6 @@ const Bill = ({Qtycount, keys, addCount,setCnfQty }) => {
         return updated;
       }
 
-      // Add new
       return [
         ...prev,
         {
@@ -67,18 +64,11 @@ const Bill = ({Qtycount, keys, addCount,setCnfQty }) => {
     setGst((subTotal*(17/100)).toFixed(2))
   },[subTotal])
   
-
-
-  // useEffect(() => {
-  //   if (flag) {
-  //     alert(`Available quantity is less ${getQty}`);
-  //   }
-  // }, [flag]);
    useEffect(() => {
     billDatas.forEach(item => {
       if (item.qty > getQty && !alertRef.current) {
         alert(`Available quantity is less ${getQty}`);
-        alertRef.current = true; // mark alert as shown
+        alertRef.current = true; 
       }
     });
   }, [billDatas, getQty]);

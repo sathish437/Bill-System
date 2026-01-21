@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-const Product = ({ setAddCount, setKeys, setQtycount,cnfQty }) => {
+const Product = ({ setAddCount, setKeys, setQtycount }) => {
   const [proData, setProData] = useState({
     proName: "",
     price: "",
@@ -65,7 +65,7 @@ const Product = ({ setAddCount, setKeys, setQtycount,cnfQty }) => {
     setKeys(id);
     setAddCount(prev => prev + 1);
 
-    if (selectedQty > getAvlQty?.Qty && selectedQty > cnfQty) {
+    if (selectedQty > getAvlQty?.Qty) {
       alert(`Available quantity is less ${getAvlQty?.Qty} `)
       return
     } else {

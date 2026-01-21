@@ -6,7 +6,6 @@ function App() {
   const [addCount, setAddCount] = useState(0)
   const [keys, setKeys] = useState(null)
   const [Qtycount, setQtycount] = useState(1)
-  const [cnfQty, setCnfQty] = useState()
 return (
   <>
 
@@ -43,14 +42,12 @@ return (
           setAddCount={setAddCount}
           setKeys={setKeys}
           setQtycount={setQtycount}
-          cnfQty={cnfQty}
         />
 
         <Bill
           Qtycount={Qtycount}
           addCount={addCount}
           keys={keys}
-          setCnfQty={setCnfQty}
           />
       </div>
     </main>
